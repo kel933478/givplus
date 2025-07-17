@@ -1,35 +1,38 @@
 import React, { useState } from 'react';
 import { Sidebar } from './components/layout/Sidebar';
+import { LoginForm } from './components/auth/LoginForm';
 import { LandingPage } from './components/pages/LandingPage';
 import { Dashboard } from './components/pages/Dashboard';
 import { CampaignEditor } from './components/pages/CampaignEditor';
 import { Banking } from './components/pages/Banking';
 import { AICopilot } from './components/pages/AICopilot';
+import { DonorCRM } from './components/pages/DonorCRM';
+import { Events } from './components/pages/Events';
+import { Billing } from './components/pages/Billing';
 
 function App() {
   const [currentPath, setCurrentPath] = useState('/');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   const handleNavigate = (path: string) => {
     setCurrentPath(path);
-    if (path === '/dashboard') {
-      setIsAuthenticated(true);
-    }
   };
 
   const handleLogin = () => {
     setIsAuthenticated(true);
+    setShowLogin(false);
     setCurrentPath('/dashboard');
   };
 
-  const renderPage = () => {
-    if (!isAuthenticated && currentPath !== '/') {
-      return <LandingPage />;
-    }
+  const handleShowLogin = () => {
+    setShowLogin(true);
+  };
 
+  const renderPage = () => {
     switch (currentPath) {
       case '/':
-        return <LandingPage />;
+        return <LandingPage onShowLogin={handleShowLogin} />;
       case '/dashboard':
         return <Dashboard />;
       case '/campaigns':
@@ -38,20 +41,26 @@ function App() {
         return <Banking />;
       case '/ai-copilot':
         return <AICopilot />;
+      case '/donors':
+        return <DonorCRM />;
+      case '/events':
+        return <Events />;
+      case '/billing':
+        return <Billing />;
       default:
         return <Dashboard />;
     }
   };
 
+  // Show login form
+  if (showLogin && !isAuthenticated) {
+    return <LoginForm onLogin={handleLogin} />;
+  }
+
+  // Show landing page or authenticated app
   if (currentPath === '/' || !isAuthenticated) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <button
-          onClick={handleLogin}
-          className="fixed top-4 right-4 z-50 bg-primary-500 text-white px-4 py-2 rounded-lg hover:bg-primary-600 transition-colors"
-        >
-          Demo Login
-        </button>
         {renderPage()}
       </div>
     );

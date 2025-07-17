@@ -14,7 +14,11 @@ import {
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 
-export const LandingPage: React.FC = () => {
+interface LandingPageProps {
+  onShowLogin: () => void;
+}
+
+export const LandingPage: React.FC<LandingPageProps> = ({ onShowLogin }) => {
   const features = [
     {
       icon: <Shield className="h-6 w-6" />,
@@ -73,7 +77,7 @@ export const LandingPage: React.FC = () => {
             <a href="#features" className="text-gray-600 hover:text-primary-600 transition-colors">Fonctionnalités</a>
             <a href="#testimonials" className="text-gray-600 hover:text-primary-600 transition-colors">Témoignages</a>
             <a href="#pricing" className="text-gray-600 hover:text-primary-600 transition-colors">Tarifs</a>
-            <Button variant="outline" size="sm">Se connecter</Button>
+            <Button variant="outline" size="sm" onClick={onShowLogin}>Se connecter</Button>
             <Button size="sm">Commencer</Button>
           </nav>
         </div>
