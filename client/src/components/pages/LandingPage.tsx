@@ -42,20 +42,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onShowLogin }) => {
     }
   ];
 
-  const testimonials = [
-    {
-      name: 'Marie Dubois',
-      role: 'Directrice - Fondation Enfance',
-      content: 'Give Plus++ a révolutionné notre gestion financière. Nous avons économisé 3000€ en frais bancaires cette année.',
-      avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=1'
-    },
-    {
-      name: 'Pierre Martin',
-      role: 'Président - Association Solidarité',
-      content: 'L\'IA nous aide à rédiger des campagnes plus efficaces. Nos dons ont augmenté de 40% en 6 mois.',
-      avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=1'
-    }
-  ];
+
 
   const trustLogos = [
     'UNESCO', 'UNICEF', 'Croix-Rouge', 'Médecins Sans Frontières', 'WWF'
@@ -75,7 +62,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onShowLogin }) => {
           
           <nav className="hidden md:flex items-center space-x-8">
             <a href="#features" className="text-gray-600 hover:text-primary-600 transition-colors">Fonctionnalités</a>
-            <a href="#testimonials" className="text-gray-600 hover:text-primary-600 transition-colors">Témoignages</a>
+            <a href="#donations" className="text-gray-600 hover:text-primary-600 transition-colors">Faire un don</a>
             <a href="#pricing" className="text-gray-600 hover:text-primary-600 transition-colors">Tarifs</a>
             <Button variant="outline" size="sm" onClick={onShowLogin}>Se connecter</Button>
             <Button size="sm">Commencer</Button>
@@ -167,37 +154,144 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onShowLogin }) => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 px-6">
+      {/* Donations Section */}
+      <section id="donations" className="py-20 px-4 sm:px-6 md:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Ils nous font confiance
+              Soutenez des causes qui comptent
             </h2>
-            <p className="text-xl text-gray-600">
-              Découvrez comment Give Plus++ transforme le quotidien des associations
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+              Découvrez les campagnes en cours et faites la différence
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} variant="elevated" className="relative">
-                <div className="flex items-start space-x-4">
-                  <img 
-                    src={testimonial.avatar} 
-                    alt={testimonial.name}
-                    className="h-12 w-12 rounded-full object-cover"
-                  />
-                  <div className="flex-1">
-                    <p className="text-gray-600 mb-4 italic">"{testimonial.content}"</p>
-                    <div>
-                      <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                      <p className="text-sm text-gray-500">{testimonial.role}</p>
-                    </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            {/* Campaign 1 - Solidarité Internationale */}
+            <Card variant="elevated" className="overflow-hidden hover:scale-105 transition-all duration-300">
+              <div className="relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=400&h=300&fit=crop"
+                  alt="Aide d'urgence - Solidarité Internationale"
+                  className="w-full h-48 object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                  <span className="text-sm font-semibold text-primary-600">65%</span>
+                </div>
+              </div>
+              <div className="p-6 space-y-4">
+                <div>
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
+                    Aide d'urgence - Solidarité Internationale
+                  </h3>
+                  <p className="text-sm md:text-base text-gray-600">
+                    Apportez votre soutien aux populations en détresse
+                  </p>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="flex justify-between text-sm font-medium">
+                    <span className="text-gray-700">32 450 € collectés</span>
+                    <span className="text-gray-700">50 000 € objectif</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3">
+                    <div 
+                      className="bg-gradient-to-r from-primary-500 to-success-500 h-3 rounded-full transition-all duration-1000 ease-out"
+                      style={{ width: '65%' }}
+                    />
                   </div>
                 </div>
-              </Card>
-            ))}
+                
+                <Button className="w-full py-3 px-6 text-base font-semibold hover:scale-105 transition-all duration-300">
+                  Faire un don
+                </Button>
+              </div>
+            </Card>
+
+            {/* Campaign 2 - Zaka Israel */}
+            <Card variant="elevated" className="overflow-hidden hover:scale-105 transition-all duration-300">
+              <div className="relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=300&fit=crop"
+                  alt="Soutien humanitaire - Zaka Israel"
+                  className="w-full h-48 object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                  <span className="text-sm font-semibold text-primary-600">64%</span>
+                </div>
+              </div>
+              <div className="p-6 space-y-4">
+                <div>
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
+                    Soutien humanitaire - Zaka Israel
+                  </h3>
+                  <p className="text-sm md:text-base text-gray-600">
+                    Aidez les équipes de secours et de sauvetage
+                  </p>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="flex justify-between text-sm font-medium">
+                    <span className="text-gray-700">48 200 € collectés</span>
+                    <span className="text-gray-700">75 000 € objectif</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3">
+                    <div 
+                      className="bg-gradient-to-r from-primary-500 to-success-500 h-3 rounded-full transition-all duration-1000 ease-out"
+                      style={{ width: '64%' }}
+                    />
+                  </div>
+                </div>
+                
+                <Button className="w-full py-3 px-6 text-base font-semibold hover:scale-105 transition-all duration-300">
+                  Faire un don
+                </Button>
+              </div>
+            </Card>
+
+            {/* Campaign 3 - Institut Curie */}
+            <Card variant="elevated" className="overflow-hidden hover:scale-105 transition-all duration-300">
+              <div className="relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400&h=300&fit=crop"
+                  alt="Recherche contre le cancer - Institut Curie"
+                  className="w-full h-48 object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                  <span className="text-sm font-semibold text-primary-600">68%</span>
+                </div>
+              </div>
+              <div className="p-6 space-y-4">
+                <div>
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
+                    Recherche contre le cancer - Institut Curie
+                  </h3>
+                  <p className="text-sm md:text-base text-gray-600">
+                    Financez la recherche médicale de pointe
+                  </p>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="flex justify-between text-sm font-medium">
+                    <span className="text-gray-700">67 890 € collectés</span>
+                    <span className="text-gray-700">100 000 € objectif</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3">
+                    <div 
+                      className="bg-gradient-to-r from-primary-500 to-success-500 h-3 rounded-full transition-all duration-1000 ease-out"
+                      style={{ width: '68%' }}
+                    />
+                  </div>
+                </div>
+                
+                <Button className="w-full py-3 px-6 text-base font-semibold hover:scale-105 transition-all duration-300">
+                  Faire un don
+                </Button>
+              </div>
+            </Card>
           </div>
         </div>
       </section>

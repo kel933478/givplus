@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { 
   TrendingUp, 
   Users, 
@@ -8,14 +8,25 @@ import {
   Download,
   Eye,
   Edit,
-  MoreHorizontal
+  MoreHorizontal,
+  CheckSquare,
+  Square,
+  ChevronDown,
+  Mail
 } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Stats } from '../ui/Stats';
 import { Header } from '../layout/Header';
+import { MassSMSModal } from '../modals/MassSMSModal';
+import { MassEmailModal } from '../modals/MassEmailModal';
+import type { CampaignSelection } from '../../types';
 
-export const Dashboard: React.FC = () => {
+export const Dashboard = () => {
+  const [selectedCampaigns, setSelectedCampaigns] = useState<string[]>([]);
+  const [showActionMenu, setShowActionMenu] = useState(false);
+  const [showSMSModal, setShowSMSModal] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
   const recentDonations = [
     { donor: 'Marie Dubois', amount: 250, campaign: 'Éducation pour tous', date: 'Il y a 2h' },
     { donor: 'Pierre Martin', amount: 100, campaign: 'Soutien alimentaire', date: 'Il y a 4h' },
@@ -30,27 +41,62 @@ export const Dashboard: React.FC = () => {
 
   const activeCampaigns = [
     { 
+      id: '1',
       title: 'Éducation pour tous', 
       raised: 15420, 
       target: 25000, 
       progress: 62,
-      donors: 234
+      donors: 234,
+      contactCount: 450
     },
     { 
+      id: '2',
       title: 'Soutien alimentaire', 
       raised: 8750, 
       target: 15000, 
       progress: 58,
-      donors: 156
+      donors: 156,
+      contactCount: 280
     },
     { 
+      id: '3',
       title: 'Accès à l\'eau potable', 
       raised: 32100, 
       target: 50000, 
       progress: 64,
-      donors: 445
+      donors: 445,
+      contactCount: 720
     },
   ];
+
+  const handleSelectAll = () => {
+    if (selectedCampaigns.length === activeCampaigns.length) {
+      setSelectedCampaigns([]);
+    } else {
+      setSelectedCampaigns(activeCampaigns.map(c => c.id));
+    }
+  };
+
+  const handleSelectCampaign = (campaignId: string) => {
+    if (selectedCampaigns.includes(campaignId)) {
+      setSelectedCampaigns(selectedCampaigns.filter(id => id !== campaignId));
+    } else {
+      setSelectedCampaigns([...selectedCampaigns, campaignId]);
+    }
+  };
+
+  const getSelectedCampaignsData = () => {
+    return activeCampaigns
+      .filter(campaign => selectedCampaigns.includes(campaign.id))
+      .map(campaign => ({
+        id: campaign.id,
+        title: campaign.title,
+        contactCount: campaign.contactCount
+      }));
+  };
+
+  const allSelected = selectedCampaigns.length === activeCampaigns.length;
+  const someSelected = selectedCampaigns.length > 0;
 
   return (
     <div className="space-y-6">
@@ -158,29 +204,120 @@ export const Dashboard: React.FC = () => {
 
       {/* Active Campaigns */}
       <Card variant="elevated">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Campagnes actives</h3>
-          <Button size="sm" className="hover:scale-105">
-            <Target className="h-5 w-5 mr-2" />
-            Nouvelle campagne
-          </Button>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 space-y-4 sm:space-y-0">
+          <div className="flex items-center space-x-4">
+            <h3 className="text-xl font-bold text-gray-900">Mes Campagnes</h3>
+            {someSelected && (
+              <span className="px-3 py-1 bg-primary-100 text-primary-800 rounded-full text-sm font-semibold">
+                {selectedCampaigns.length} sélectionnée{selectedCampaigns.length > 1 ? 's' : ''}
+              </span>
+            )}
+          </div>
+          
+          <div className="flex items-center space-x-3">
+            {someSelected && (
+              <div className="relative">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => setShowActionMenu(!showActionMenu)}
+                  className="hover:scale-105"
+                >
+                  Actions groupées
+                  <ChevronDown className="h-4 w-4 ml-2" />
+                </Button>
+                
+                {showActionMenu && (
+                  <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-lg z-10">
+                    <div className="py-2">
+                      <button 
+                        onClick={handleSelectAll}
+                        className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <CheckSquare className="h-4 w-4 mr-3" />
+                        {allSelected ? 'Désélectionner tout' : 'Sélectionner tout'}
+                      </button>
+                      <button 
+                        onClick={() => {
+                          setSelectedCampaigns([]);
+                          setShowActionMenu(false);
+                        }}
+                        className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <Square className="h-4 w-4 mr-3" />
+                        Désélectionner tout
+                      </button>
+                      <hr className="my-2" />
+                      <button 
+                        onClick={() => {
+                          setShowSMSModal(true);
+                          setShowActionMenu(false);
+                        }}
+                        className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <MessageSquare className="h-4 w-4 mr-3" />
+                        SMS Envoi mass
+                      </button>
+                      <button 
+                        onClick={() => {
+                          setShowEmailModal(true);
+                          setShowActionMenu(false);
+                        }}
+                        className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <Mail className="h-4 w-4 mr-3" />
+                        Email Envoi mass
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            <Button size="sm" className="hover:scale-105">
+              <Target className="h-5 w-5 mr-2" />
+              Nouvelle campagne
+            </Button>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {activeCampaigns.map((campaign, index) => (
-            <Card key={index} variant="gradient" className="relative hover:scale-105 transition-all duration-300">
-              <div className="absolute top-6 right-6">
-                <Button variant="ghost" size="sm" className="hover:scale-110">
-                  <MoreHorizontal className="h-5 w-5" />
-                </Button>
-              </div>
-              
-              <div className="space-y-4">
+          {activeCampaigns.map((campaign) => {
+            const isSelected = selectedCampaigns.includes(campaign.id);
+            return (
+              <Card 
+                key={campaign.id} 
+                variant="gradient" 
+                className={`relative hover:scale-105 transition-all duration-300 ${
+                  isSelected ? 'ring-2 ring-primary-500 bg-primary-50' : ''
+                }`}
+              >
+                <div className="absolute top-6 left-6">
+                  <button
+                    onClick={() => handleSelectCampaign(campaign.id)}
+                    className="h-5 w-5 border-2 border-gray-300 rounded-md flex items-center justify-center hover:border-primary-500 transition-colors"
+                  >
+                    {isSelected && (
+                      <CheckSquare className="h-4 w-4 text-primary-600" />
+                    )}
+                  </button>
+                </div>
+                
+                <div className="absolute top-6 right-6">
+                  <Button variant="ghost" size="sm" className="hover:scale-110">
+                    <MoreHorizontal className="h-5 w-5" />
+                  </Button>
+                </div>
+                
+                <div className="space-y-4 pt-8">
                 <div>
                   <h4 className="font-bold text-lg text-gray-900 mb-3">{campaign.title}</h4>
                   <div className="flex items-center justify-between text-sm font-medium text-gray-700">
                     <span>{campaign.raised.toLocaleString()} € collectés</span>
                     <span>{campaign.donors} donateurs</span>
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {campaign.contactCount} contacts
                   </div>
                 </div>
                 
@@ -209,9 +346,23 @@ export const Dashboard: React.FC = () => {
                 </div>
               </div>
             </Card>
-          ))}
+            );
+          })}
         </div>
       </Card>
+
+      {/* Modals */}
+      <MassSMSModal
+        isOpen={showSMSModal}
+        onClose={() => setShowSMSModal(false)}
+        selectedCampaigns={getSelectedCampaignsData()}
+      />
+      
+      <MassEmailModal
+        isOpen={showEmailModal}
+        onClose={() => setShowEmailModal(false)}
+        selectedCampaigns={getSelectedCampaignsData()}
+      />
 
       {/* Monthly Chart */}
       <Card variant="glass">

@@ -24,6 +24,14 @@ export interface Campaign {
   donationType: 'unique' | 'recurring' | 'both';
   matching?: number;
   donors: Donor[];
+  contactCount?: number;
+}
+
+export interface CampaignSelection {
+  id: string;
+  title: string;
+  contactCount: number;
+  selected: boolean;
 }
 
 export interface Donor {

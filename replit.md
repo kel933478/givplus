@@ -29,9 +29,15 @@ A comprehensive fundraising platform with campaign management, donor CRM, bankin
 ## Recent Changes
 - **2025-01-17**: Started migration from Bolt to Replit
 - **2025-01-17**: Verified project structure and dependencies
-- **2025-01-17**: Migration in progress - updating to use wouter routing
+- **2025-01-17**: Updated to use wouter routing for better security
+- **2025-01-17**: Replaced testimonials with donation campaigns section
+- **2025-01-17**: Added mass SMS/Email functionality to dashboard
+- **2025-01-17**: Implemented mobile-first responsive design
 
 ## User Preferences
 - Focus on security and modern web practices
 - Prefer client/server separation
 - Use established UI component libraries
+- 100% French interface required
+- Mobile-first responsive design prioritized
+- Modern fintech styling with blue/green color scheme
