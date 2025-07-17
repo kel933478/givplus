@@ -24,10 +24,26 @@ export const MassSMSModal = ({ isOpen, onClose, selectedCampaigns }: MassSMSModa
 
   const handleSend = async () => {
     setIsSending(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setIsSending(false);
-    onClose();
+    try {
+      const response = await fetch('/api/communications/sms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message,
+          campaignIds: selectedCampaigns.map(c => parseInt(c.id))
+        })
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        console.log('SMS envoyé avec succès:', result);
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'envoi SMS:', error);
+    } finally {
+      setIsSending(false);
+      onClose();
+    }
   };
 
   if (!isOpen) return null;

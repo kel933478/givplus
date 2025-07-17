@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { 
   TrendingUp, 
   Users, 
@@ -20,54 +21,46 @@ import { Stats } from '../ui/Stats';
 import { Header } from '../layout/Header';
 import { MassSMSModal } from '../modals/MassSMSModal';
 import { MassEmailModal } from '../modals/MassEmailModal';
+import type { Campaign } from "@shared/schema";
 import type { CampaignSelection } from '../../types';
 
 export const Dashboard = () => {
-  const [selectedCampaigns, setSelectedCampaigns] = useState<string[]>([]);
+  const [selectedCampaigns, setSelectedCampaigns] = useState<number[]>([]);
   const [showActionMenu, setShowActionMenu] = useState(false);
   const [showSMSModal, setShowSMSModal] = useState(false);
   const [showEmailModal, setShowEmailModal] = useState(false);
-  const recentDonations = [
-    { donor: 'Marie Dubois', amount: 250, campaign: 'Éducation pour tous', date: 'Il y a 2h' },
-    { donor: 'Pierre Martin', amount: 100, campaign: 'Soutien alimentaire', date: 'Il y a 4h' },
-    { donor: 'Julie Bernard', amount: 500, campaign: 'Éducation pour tous', date: 'Il y a 1j' },
-  ];
+  const queryClient = useQueryClient();
 
-  const topDonors = [
-    { name: 'Marie Dubois', total: 2500, donations: 12 },
-    { name: 'Pierre Martin', total: 1800, donations: 8 },
-    { name: 'Julie Bernard', total: 1200, donations: 6 },
-  ];
+  // Fetch campaigns from API
+  const { data: campaigns = [], isLoading: campaignsLoading } = useQuery({
+    queryKey: ['/api/campaigns'],
+    queryFn: async () => {
+      const response = await fetch('/api/campaigns');
+      if (!response.ok) throw new Error('Failed to fetch campaigns');
+      return response.json() as Promise<Campaign[]>;
+    }
+  });
 
-  const activeCampaigns = [
-    { 
-      id: '1',
-      title: 'Éducation pour tous', 
-      raised: 15420, 
-      target: 25000, 
-      progress: 62,
-      donors: 234,
-      contactCount: 450
-    },
-    { 
-      id: '2',
-      title: 'Soutien alimentaire', 
-      raised: 8750, 
-      target: 15000, 
-      progress: 58,
-      donors: 156,
-      contactCount: 280
-    },
-    { 
-      id: '3',
-      title: 'Accès à l\'eau potable', 
-      raised: 32100, 
-      target: 50000, 
-      progress: 64,
-      donors: 445,
-      contactCount: 720
-    },
-  ];
+  // Fetch statistics from API
+  const { data: stats, isLoading: statsLoading } = useQuery({
+    queryKey: ['/api/stats'],
+    queryFn: async () => {
+      const response = await fetch('/api/stats');
+      if (!response.ok) throw new Error('Failed to fetch stats');
+      return response.json();
+    }
+  });
+
+  // Process campaigns data for display
+  const activeCampaigns = campaigns.map(campaign => ({
+    id: campaign.id,
+    title: campaign.title,
+    raised: parseFloat(campaign.raised || "0"),
+    target: parseFloat(campaign.target),
+    progress: Math.round((parseFloat(campaign.raised || "0") / parseFloat(campaign.target)) * 100),
+    donors: Math.floor(parseFloat(campaign.raised || "0") / 50), // Estimated donors
+    contactCount: campaign.contactCount || 0
+  }));
 
   const handleSelectAll = () => {
     if (selectedCampaigns.length === activeCampaigns.length) {
@@ -77,7 +70,7 @@ export const Dashboard = () => {
     }
   };
 
-  const handleSelectCampaign = (campaignId: string) => {
+  const handleSelectCampaign = (campaignId: number) => {
     if (selectedCampaigns.includes(campaignId)) {
       setSelectedCampaigns(selectedCampaigns.filter(id => id !== campaignId));
     } else {
@@ -112,22 +105,22 @@ export const Dashboard = () => {
           icon={<TrendingUp className="h-8 w-8 text-primary-600" />}
         />
         <Stats
-          title="Total des dons"
-          value="156,789 €"
+          title="Total collecté"
+          value={stats ? `${stats.totalRaised.toLocaleString()} €` : "0 €"}
           change="+8.3% ce mois"
           changeType="positive"
           icon={<Target className="h-8 w-8 text-success-600" />}
         />
         <Stats
           title="Campagnes actives"
-          value="12"
+          value={stats ? stats.activeCampaigns.toString() : "0"}
           change="2 nouvelles"
           changeType="positive"
           icon={<Target className="h-8 w-8 text-primary-600" />}
         />
         <Stats
-          title="Nouveaux donateurs"
-          value="347"
+          title="Total donateurs"
+          value={stats ? stats.totalDonors.toString() : "0"}
           change="+15.2% ce mois"
           changeType="positive"
           icon={<Users className="h-8 w-8 text-success-600" />}

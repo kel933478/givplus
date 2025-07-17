@@ -22,10 +22,27 @@ export const MassEmailModal = ({ isOpen, onClose, selectedCampaigns }: MassEmail
 
   const handleSend = async () => {
     setIsSending(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setIsSending(false);
-    onClose();
+    try {
+      const response = await fetch('/api/communications/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          subject,
+          content,
+          campaignIds: selectedCampaigns.map(c => parseInt(c.id))
+        })
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Email envoyé avec succès:', result);
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'envoi email:', error);
+    } finally {
+      setIsSending(false);
+      onClose();
+    }
   };
 
   if (!isOpen) return null;
