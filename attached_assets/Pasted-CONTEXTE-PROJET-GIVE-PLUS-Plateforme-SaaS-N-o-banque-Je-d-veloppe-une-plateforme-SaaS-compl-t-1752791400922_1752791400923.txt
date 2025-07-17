@@ -1,0 +1,146 @@
+CONTEXTE PROJET : GIVE PLUS++ - Plateforme SaaS Néo-banque
+
+Je développe une plateforme SaaS complète nommée GIVE PLUS++, une néo-banque du futur 100% dédiée aux associations, fondations et ONG internationales.
+
+STACK TECHNIQUE ACTUEL :
+- React + TypeScript + Vite
+- Tailwind CSS pour le styling
+- Lucide React pour les icônes
+- Architecture composants modulaires
+
+DESIGN SYSTEM :
+- Couleurs : Bleu électrique (#3B82F6), Vert impact (#10B981), Noir carbone (#111827), Blanc pur (#FFFFFF)
+- Style : Fintech futuriste, interface épurée, effets néomorphiques subtils
+- 100% interface française (textes, boutons, menus, placeholders)
+- Responsive mobile-first obligatoire
+
+INTERFACES EXISTANTES :
+✅ Landing page avec hero section
+✅ Système d'authentification sécurisé
+✅ Dashboard principal avec sidebar navigation
+✅ Module Banking (IBAN, cartes virtuelles, transactions)
+✅ CRM Donateurs avec actions communication
+✅ Module Événements complet
+✅ IA Copilot pour génération de contenu
+✅ Système de facturation
+
+ARCHITECTURE FICHIERS :
+src/
+├── components/
+│   ├── ui/ (Button, Card, Input, Modal, Stats)
+│   ├── layout/ (Header, Sidebar)
+│   ├── pages/ (Dashboard, Banking, CRM, Events, etc.)
+│   ├── auth/ (LoginForm)
+│   └── modals/
+├── types/ (TypeScript interfaces)
+└── utils/ (utilitaires)
+
+CONTRAINTES IMPORTANTES :
+- Interface 100% française obligatoire
+- Accessibilité WCAG 2.1 AA
+- Performance optimisée mobile/desktop
+- Cohérence design fintech moderne
+- TypeScript strict
+
+=== MISSION ACTUELLE ===
+
+### 1. LANDING PAGE - Remplacer témoignages par "Faire un don"
+- **Supprime la section témoignages** complètement de `src/components/pages/LandingPage.tsx`
+- **Crée une nouvelle section "Faire un don"** avec :
+  - Titre : "Soutenez des causes qui comptent"
+  - Sous-titre : "Découvrez les campagnes en cours et faites la différence"
+  - **3 cards de campagnes** avec design moderne :
+
+**Campagne 1 - Solidarité Internationale**
+- Image : `https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=400&h=300&fit=crop`
+- Titre : "Aide d'urgence - Solidarité Internationale"
+- Description : "Apportez votre soutien aux populations en détresse"
+- Objectif : 50 000 €
+- Collecté : 32 450 €
+- Barre de progression animée (65% complété)
+- Bouton "Faire un don"
+
+**Campagne 2 - Zaka Israel**
+- Image : `https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=300&fit=crop`
+- Titre : "Soutien humanitaire - Zaka Israel"
+- Description : "Aidez les équipes de secours et de sauvetage"
+- Objectif : 75 000 €
+- Collecté : 48 200 €
+- Barre de progression animée (64% complété)
+- Bouton "Faire un don"
+
+**Campagne 3 - Institut Curie**
+- Image : `https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400&h=300&fit=crop`
+- Titre : "Recherche contre le cancer - Institut Curie"
+- Description : "Financez la recherche médicale de pointe"
+- Objectif : 100 000 €
+- Collecté : 67 890 €
+- Barre de progression animée (68% complété)
+- Bouton "Faire un don"
+
+### 2. OPTIMISATION MOBILE PRIORITAIRE
+- **Cards campagnes** : Stack vertical sur mobile (grid-cols-1), grid 3 colonnes sur desktop (md:grid-cols-3)
+- **Boutons** : Taille tactile minimum 44px, padding généreux (py-3 px-6)
+- **Typography** : Responsive (text-sm md:text-base, text-lg md:text-xl)
+- **Images** : Ratio 16:9, object-cover, loading="lazy"
+- **Navigation** : Menu burger sur mobile, sidebar visible sur desktop
+- **Spacing** : px-4 sm:px-6 md:px-8, py-4 md:py-6
+- **Breakpoints** : Mobile-first strict avec sm:, md:, lg:, xl:
+
+### 3. DASHBOARD - Actions de masse pour campagnes
+Dans `src/components/pages/Dashboard.tsx`, section campagnes :
+
+- **Header amélioré** avec :
+  - Titre "Mes Campagnes"
+  - Bouton "Actions groupées" avec dropdown
+  - Compteur de sélection
+
+- **Checkboxes sur chaque campagne** :
+  - Checkbox principal "Sélectionner tout"
+  - Checkbox individuel par campagne
+  - État visuel de sélection
+
+- **Menu dropdown "Actions groupées"** :
+  - "Sélectionner tout" (icône CheckSquare)
+  - "Désélectionner tout" (icône Square)
+  - Divider
+  - "SMS Envoi mass" (icône MessageSquare)
+  - "Email Envoi mass" (icône Mail)
+
+### 4. NOUVEAUX COMPOSANTS - Modales d'actions
+**Créer :**
+
+`src/components/modals/MassSMSModal.tsx` :
+- Modal responsive (plein écran sur mobile)
+- Textarea pour message SMS
+- Compteur caractères (160 max) en temps réel
+- Prévisualisation coût (0.05€/SMS)
+- Liste des campagnes sélectionnées avec nombres de contacts
+- Estimation totale des envois
+- Boutons "Annuler" / "Envoyer à tous"
+
+`src/components/modals/MassEmailModal.tsx` :
+- Modal responsive (plein écran sur mobile)
+- Input objet email
+- Textarea pour contenu (rich text simulé)
+- Prévisualisation email basique
+- Liste des campagnes sélectionnées
+- Estimation totale des envois (gratuit)
+- Boutons "Annuler" / "Envoyer à tous"
+
+### 5. SPECIFICATIONS TECHNIQUES
+- **State management** : useState pour sélections multiples, modales
+- **Performance** : Lazy loading images, memo sur composants lourds
+- **Animations** : transition-all duration-300 sur tous les hovers
+- **Accessibilité** : aria-labels, focus-visible, keyboard navigation
+- **TypeScript** : Interfaces strictes pour Campaign, Selection, etc.
+
+### 6. RENDU FINAL ATTENDU
+- Landing page moderne avec vraies campagnes et images
+- Mobile-first parfaitement optimisé
+- Dashboard avec sélection multiple fonctionnelle
+- Modales d'envoi masse opérationnelles
+- Interface 100% française cohérente
+- Performance et accessibilité optimales
+
+Génère le code complet en respectant l'architecture existante et en priorisant l'expérience mobile.

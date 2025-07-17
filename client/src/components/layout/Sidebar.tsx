@@ -1,4 +1,3 @@
-import React from 'react';
 import { 
   Home, 
   Target, 
@@ -10,12 +9,8 @@ import {
   Settings,
   LogOut
 } from 'lucide-react';
+import { Link, useLocation } from 'wouter';
 import { cn } from '../../utils/cn';
-
-interface SidebarProps {
-  currentPath: string;
-  onNavigate: (path: string) => void;
-}
 
 const menuItems = [
   { path: '/dashboard', label: 'Accueil', icon: Home },
@@ -28,7 +23,8 @@ const menuItems = [
   { path: '/settings', label: 'Paramètres', icon: Settings },
 ];
 
-export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => {
+export const Sidebar = () => {
+  const [location] = useLocation();
   return (
     <aside className="w-72 bg-gradient-to-b from-white via-gray-50/30 to-white border-r border-gray-200/60 h-screen sticky top-0 shadow-xl">
       <div className="p-8">
@@ -47,12 +43,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => 
         <ul className="space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;
-            const isActive = currentPath === item.path;
+            const isActive = location === item.path;
             
             return (
               <li key={item.path}>
-                <button
-                  onClick={() => onNavigate(item.path)}
+                <Link
+                  href={item.path}
                   className={cn(
                     'w-full flex items-center space-x-4 px-4 py-3 rounded-xl text-left transition-all duration-300 hover:scale-105',
                     isActive
@@ -62,7 +58,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => 
                 >
                   <Icon className="h-6 w-6" />
                   <span className="font-semibold">{item.label}</span>
-                </button>
+                </Link>
               </li>
             );
           })}
