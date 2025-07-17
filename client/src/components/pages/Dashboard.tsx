@@ -21,6 +21,7 @@ import { Stats } from '../ui/Stats';
 import { Header } from '../layout/Header';
 import { MassSMSModal } from '../modals/MassSMSModal';
 import { MassEmailModal } from '../modals/MassEmailModal';
+import { QuickActions } from '../features/QuickActions';
 import type { Campaign } from "@shared/schema";
 import type { CampaignSelection } from '../../types';
 
@@ -126,6 +127,9 @@ export const Dashboard = () => {
           icon={<Users className="h-8 w-8 text-success-600" />}
         />
       </div>
+
+      {/* Quick Actions */}
+      <QuickActions />
 
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -267,7 +271,11 @@ export const Dashboard = () => {
               </div>
             )}
             
-            <Button size="sm" className="hover:scale-105">
+            <Button 
+              size="sm" 
+              className="hover:scale-105"
+              onClick={() => window.location.href = '/create-campaign'}
+            >
               <Target className="h-5 w-5 mr-2" />
               Nouvelle campagne
             </Button>
@@ -328,7 +336,12 @@ export const Dashboard = () => {
                 </div>
                 
                 <div className="flex space-x-2">
-                  <Button variant="outline" size="sm" className="flex-1 hover:scale-105">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex-1 hover:scale-105"
+                    onClick={() => window.location.href = `/campaign/${campaign.id}`}
+                  >
                     <Eye className="h-5 w-5 mr-2" />
                     Voir
                   </Button>

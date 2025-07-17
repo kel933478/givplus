@@ -80,6 +80,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/donations/campaign/:campaignId", async (req, res) => {
+    try {
+      const campaignId = parseInt(req.params.campaignId);
+      const donations = await storage.getDonationsByCampaign(campaignId);
+      res.json(donations);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch campaign donations" });
+    }
+  });
+
   app.post("/api/donations", async (req, res) => {
     try {
       const donationData = insertDonationSchema.parse(req.body);

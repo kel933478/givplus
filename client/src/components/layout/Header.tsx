@@ -1,6 +1,7 @@
 import React from 'react';
 import { Bell, Search, User, Globe, ChevronDown } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { RealtimeNotifications } from '../features/RealtimeNotifications';
 
 interface HeaderProps {
   title: string;

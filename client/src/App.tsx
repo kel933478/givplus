@@ -6,6 +6,9 @@ import { Sidebar } from './components/layout/Sidebar';
 import { LoginForm } from './components/auth/LoginForm';
 import { LandingPage } from './components/pages/LandingPage';
 import { Dashboard } from './components/pages/Dashboard';
+import { CampaignDetails } from './components/pages/CampaignDetails';
+import { CreateCampaign } from './components/pages/CreateCampaign';
+import { DonorDetails } from './components/pages/DonorDetails';
 import { CampaignEditor } from './components/pages/CampaignEditor';
 import { Banking } from './components/pages/Banking';
 import { AICopilot } from './components/pages/AICopilot';
@@ -23,6 +26,9 @@ function AuthenticatedApp() {
         <main className="p-6">
           <Switch>
             <Route path="/dashboard" component={Dashboard} />
+            <Route path="/campaign/:id" component={CampaignDetails} />
+            <Route path="/create-campaign" component={CreateCampaign} />
+            <Route path="/donor-details" component={DonorDetails} />
             <Route path="/campaigns" component={CampaignEditor} />
             <Route path="/banking" component={Banking} />
             <Route path="/ai-copilot" component={AICopilot} />
