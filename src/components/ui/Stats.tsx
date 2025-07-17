@@ -24,19 +24,19 @@ export const Stats: React.FC<StatsProps> = ({
   };
 
   return (
-    <Card variant="neo" padding="md">
+    <Card variant="gradient" padding="lg" className="hover:scale-105 transition-all duration-300">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">{title}</p>
+          <p className="text-3xl font-bold text-gray-900 mt-2">{value}</p>
           {change && (
-            <p className={cn('text-sm', changeColors[changeType])}>
+            <p className={cn('text-sm font-medium mt-1', changeColors[changeType])}>
               {change}
             </p>
           )}
         </div>
         {icon && (
-          <div className="h-12 w-12 bg-primary-50 rounded-lg flex items-center justify-center">
+          <div className="h-16 w-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-2xl flex items-center justify-center shadow-lg">
             {icon}
           </div>
         )}

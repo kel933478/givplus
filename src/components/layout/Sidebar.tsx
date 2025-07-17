@@ -30,20 +30,20 @@ const menuItems = [
 
 export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => {
   return (
-    <aside className="w-64 bg-white border-r border-gray-200 h-screen sticky top-0">
-      <div className="p-6">
+    <aside className="w-72 bg-gradient-to-b from-white via-gray-50/30 to-white border-r border-gray-200/60 h-screen sticky top-0 shadow-xl">
+      <div className="p-8">
         <div className="flex items-center space-x-3">
-          <div className="h-10 w-10 bg-gradient-to-r from-primary-500 to-success-500 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-lg">G+</span>
+          <div className="h-12 w-12 bg-gradient-to-br from-primary-500 via-primary-600 to-success-500 rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300">
+            <span className="text-white font-bold text-xl">G+</span>
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-900">GIVE PLUS++</h2>
-            <p className="text-sm text-gray-500">Néo-banque solidaire</p>
+            <h2 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">GIVE PLUS++</h2>
+            <p className="text-sm font-medium text-gray-600">Néo-banque solidaire</p>
           </div>
         </div>
       </div>
       
-      <nav className="px-3 pb-4">
+      <nav className="px-4 pb-4">
         <ul className="space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;
@@ -54,14 +54,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => 
                 <button
                   onClick={() => onNavigate(item.path)}
                   className={cn(
-                    'w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors duration-200',
+                    'w-full flex items-center space-x-4 px-4 py-3 rounded-xl text-left transition-all duration-300 hover:scale-105',
                     isActive
-                      ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-500'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      ? 'bg-gradient-to-r from-primary-100 to-primary-50 text-primary-800 shadow-md border-r-4 border-primary-500 font-semibold'
+                      : 'text-gray-700 hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-50 hover:text-gray-900 hover:shadow-sm'
                   )}
                 >
-                  <Icon className="h-5 w-5" />
-                  <span className="font-medium">{item.label}</span>
+                  <Icon className="h-6 w-6" />
+                  <span className="font-semibold">{item.label}</span>
                 </button>
               </li>
             );
@@ -69,10 +69,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => 
         </ul>
       </nav>
       
-      <div className="absolute bottom-0 left-0 right-0 p-3">
-        <button className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors duration-200">
-          <LogOut className="h-5 w-5" />
-          <span className="font-medium">Déconnexion</span>
+      <div className="absolute bottom-0 left-0 right-0 p-4">
+        <button className="w-full flex items-center space-x-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-700 transition-all duration-300 hover:scale-105 hover:shadow-sm">
+          <LogOut className="h-6 w-6" />
+          <span className="font-semibold">Déconnexion</span>
         </button>
       </div>
     </aside>
